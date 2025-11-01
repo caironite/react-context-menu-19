@@ -1,7 +1,8 @@
 declare module "rctx-contextmenu" {
   import * as React from "react";
 
-  export interface ContextMenu {
+  export interface ContextMenu
+  {
     id: string,
     appendTo?: string,
     animation?: string,
@@ -11,30 +12,36 @@ declare module "rctx-contextmenu" {
     children?: ReactNode,
     preventHideOnResize?: boolean,
     preventHideOnScroll?: boolean,
-    onShow?: {(event: any): void},
-    onHide?: {(event: any): void},
-    onMouseLeave?: {(event: any): void}
+    onShow?: { (event: any): void },
+    onHide?: { (event: any): void },
+    onMouseLeave?: { (event: any): void }
   }
 
-  export interface ContextMenuItem {
+  export interface ContextMenuItem
+  {
     disabled?: boolean,
     preventClose?: boolean,
     disableWhileShiftPressed?: boolean,
     attributes?: object,
     className?: string,
     children?: ReactNode,
-    onClick?: {(event: any): void}
+    onClick?: { (event: any): void }
   }
 
-  export interface ContextMenuTrigger {
+  export interface ContextMenuTrigger
+  {
     id: string,
     attributes?: object,
     disable?: boolean,
     className?: string,
-    children?: ReactNode
+    children?: ReactNode,
+    as?: React.ElementType,
+    disableWhileShiftPressed?: boolean,
+    data?: object | null
   }
 
-  export interface Submenu {
+  export interface Submenu
+  {
     title: string,
     attributes?: object,
     className?: boolean,

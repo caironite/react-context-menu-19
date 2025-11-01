@@ -20,24 +20,28 @@ function ContextMenu({
   attributes = {},
   className = '',
   animation = 'fade'
-}) {
+})
+{
   const contextMenuEl = useRef(null);
   const [isVisible, setVisible] = useState(false);
   const [clientPosition, setClientPosition] = useState(null);
 
-  const showMenu = e => {
+  const showMenu = e =>
+  {
     const { position } = e;
 
     setVisible(true);
     setClientPosition(position);
   };
 
-  const hideMenu = () => {
+  const hideMenu = () =>
+  {
     setVisible(false);
     if (onHide) onHide();
   };
 
-  const handleMouseLeave = useCallback(e => {
+  const handleMouseLeave = useCallback(e =>
+  {
     e.preventDefault();
 
     onMouseLeave(e);
@@ -45,17 +49,22 @@ function ContextMenu({
     if (hideOnLeave) callHideEvent(id);
   });
 
-  const clickOutsideCallback = event => {
-    if (contextMenuEl.current && !contextMenuEl.current.contains(event.target)) {
+  const clickOutsideCallback = event =>
+  {
+    if (contextMenuEl.current && !contextMenuEl.current.contains(event.target))
+    {
       callHideEvent(id);
     }
   }
 
-  const contextMenuCallback = event => {
+  const contextMenuCallback = event =>
+  {
     let targetElement = event.target;
 
-    do {
-      if (targetElement.classList && targetElement.classList.contains('menu-trigger')) {
+    do
+    {
+      if (targetElement.classList && targetElement.classList.contains('menu-trigger'))
+      {
         return;
       }
       targetElement = targetElement.parentNode;
@@ -65,15 +74,18 @@ function ContextMenu({
     callHideEvent(id);
   }
 
-  const onScrollHideCallback = throttle(() => {
+  const onScrollHideCallback = throttle(() =>
+  {
     callHideEvent(id);
   }, 200)
 
-  const onResizeHideCallback = throttle(() => {
+  const onResizeHideCallback = throttle(() =>
+  {
     callHideEvent(id);
   }, 200)
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     registerEvent(id, showMenu, hideMenu);
 
     // detect click outside
@@ -83,16 +95,19 @@ function ContextMenu({
     document.addEventListener('contextmenu', contextMenuCallback);
 
     // on scroll hide handled
-    if (!preventHideOnScroll) {
+    if (!preventHideOnScroll)
+    {
       window.addEventListener('scroll', onScrollHideCallback);
     }
 
     // on resize hide handled
-    if (!preventHideOnResize) {
+    if (!preventHideOnResize)
+    {
       window.addEventListener('resize', onResizeHideCallback);
     }
 
-    return () => {
+    return () =>
+    {
       document.removeEventListener('mousedown', clickOutsideCallback);
       document.removeEventListener('contextmenu', contextMenuCallback);
       window.removeEventListener('scroll', onScrollHideCallback);
@@ -100,8 +115,10 @@ function ContextMenu({
     };
   }, []);
 
-  useEffect(() => {
-    if (isVisible) {
+  useEffect(() =>
+  {
+    if (isVisible)
+    {
       const { clientY, clientX } = clientPosition;
       const { innerHeight: windowInnerHeight, innerWidth: windowInnerWidth } = window;
       const { offsetHeight: elemHeight, offsetWidth: elemWidth } = contextMenuEl.current;
@@ -112,8 +129,8 @@ function ContextMenu({
       if (windowInnerHeight < clientY + elemHeight) newClientY = clientY - elemHeight;
       if (windowInnerWidth < clientX + elemWidth) newClientX = clientX - elemWidth;
 
-      contextMenuEl.current.style.top = `${newClientY + 2}px`;
-      contextMenuEl.current.style.left = `${newClientX + 2}px`;
+      contextMenuEl.current.style.top = `${ newClientY + 2 }px`;
+      contextMenuEl.current.style.left = `${ newClientX + 2 }px`;
 
       if (onShow) onShow();
     }
@@ -127,12 +144,12 @@ function ContextMenu({
 
   const ContextComponent = () => (
     <div
-      className={classnames('contextmenu', ...className.split(' '))}
-      ref={contextMenuEl}
-      onMouseLeave={handleMouseLeave}
-      {...attributes}
+      className={ classnames('contextmenu', ...className.split(' ')) }
+      ref={ contextMenuEl }
+      onMouseLeave={ handleMouseLeave }
+      { ...attributes }
     >
-      {childrenWithProps}
+      { childrenWithProps }
     </div>
   );
 
@@ -143,12 +160,13 @@ function ContextMenu({
     )
   );
 
-  if (document.readyState === 'complete' && appendTo) {
+  if (document.readyState === 'complete' && appendTo)
+  {
     return animation ? (
       <AnimateComponent
-        isVisible={isVisible}
-        timeout={200}
-        className={animation}
+        isVisible={ isVisible }
+        timeout={ 200 }
+        className={ animation }
       >
         <PortalContextComponent />
       </AnimateComponent>
@@ -159,9 +177,9 @@ function ContextMenu({
 
   return animation ? (
     <AnimateComponent
-      isVisible={isVisible}
-      timeout={200}
-      className={animation}
+      isVisible={ isVisible }
+      timeout={ 200 }
+      className={ animation }
     >
       <ContextComponent />
     </AnimateComponent>

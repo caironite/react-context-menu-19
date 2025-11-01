@@ -1,42 +1,53 @@
 import React, { useCallback, useRef } from 'react';
 import classnames from 'classnames';
-import { callHideEvent } from './registerEvent';
+import { callHideEvent, getActiveOptions } from './registerEvent';
 
-function ContextMenuItem({
-  children,
-  onClick = () => null,
-  disabled = false,
-  preventClose = false,
-  attributes = {},
-  className = ''
-}) {
-  const contextMenuItem = useRef(null);
+const ContextMenuItem = ({
+    children,
+    onClick = () => null,
+    disabled = false,
+    preventClose = false,
+    attributes = {},
+    className = ''
+}) =>
+{
+    const contextMenuItem = useRef(null);
 
-  const handleClickEvent = useCallback(e => {
-    if (disabled) return;
-    onClick(e);
+    const handleClickEvent = useCallback(e =>
+    {
+        if (disabled)
+        {
+            return;
+        }
 
-    if (!preventClose) callHideEvent('ID_NOT_REQUIRED');
-  });
+        const ctx = getActiveOptions();
+        onClick(e, ctx);
 
-  return (
-    <div
-      className={
-        classnames(
-          'contextmenu__item',
-          {
-            'contextmenu__item--disabled': disabled
-          },
-          ...className.split(' ')
-        )
-      }
-      onClick={handleClickEvent}
-      {...attributes}
-      ref={contextMenuItem}
-    >
-      {children}
-    </div>
-  );
+        if (!preventClose)
+        {
+            callHideEvent('ID_NOT_REQUIRED');
+        }
+
+    }, [disabled, preventClose, onClick]);
+
+    return (
+        <div
+            className={
+                classnames(
+                    'contextmenu__item',
+                    {
+                        'contextmenu__item--disabled': disabled
+                    },
+                    ...className.split(' ')
+                )
+            }
+            onClick={ handleClickEvent }
+            { ...attributes }
+            ref={ contextMenuItem }
+        >
+            { children }
+        </div>
+    );
 }
 
 export default ContextMenuItem;
